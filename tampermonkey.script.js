@@ -1,10 +1,10 @@
 // ==UserScript==
-// @name         BTT
+// @name         Memrise
 // @namespace    http://tampermonkey.net/
 // @version      0.1
 // @description  try to take over the world!
 // @author       You
-// @match        https://www.csltd.com.ua/*
+// @match        https://www.memrise.com/*
 // @resource     bootstrap  http://localhost:8080/css/bootstrap.min.css
 // @resource     glph_eot   http://localhost:8080/fonts/glyphicons-halflings-regular.eot
 // @resource     glph_woff2 http://localhost:8080/fonts/glyphicons-halflings-regular.woff2
@@ -14,11 +14,12 @@
 // @require      http://localhost:8080/js/jquery-1.12.4.min.js
 // @require      http://localhost:8080/js/bootstrap.min.js
 // @require      http://localhost:8080/js/autosize.min.js
-// @require      http://localhost:8080/BTT/helper_code.js
-// @require      http://localhost:8080/BTT/run.js
-// @require      http://localhost:8080/BTT/draggable.js
-// @resource     html http://localhost:8080/BTT/plugin.html
-// @resource     css2 http://localhost:8080/BTT/style.css
+// @require      http://localhost:8080/Memrise/helper_code.js
+// @require      http://localhost:8080/Memrise/run.js
+// @require      http://localhost:8080/Memrise/data.js
+// @require      http://localhost:8080/Memrise/draggable.js
+// @resource     html http://localhost:8080/Memrise/plugin.html
+// @resource     css2 http://localhost:8080/Memrise/style.css
 // @grant        GM_getResourceText
 // @grant        GM_getResourceURL
 // ==/UserScript==
