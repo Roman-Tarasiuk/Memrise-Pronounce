@@ -1,0 +1,43 @@
+<div id="plugindivheader">
+    Additional info
+    <span class="pull-right">
+        <button class="btn btn-xs btn-expand"
+                type="button"
+                data-toggle="collapse"
+                data-target="#pluginContent"
+                aria-expanded="false"
+                aria-controls="pluginContent">
+            <span class="glyphicon glyphicon-menu-down"></span>
+        </button>
+        <button type="button"
+                class="close"
+                aria-label="Close"
+                style="margin-left: 3px;"
+                onclick="document.getElementById('plugindiv').hidden = true;">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </span>
+</div>
+<div class="collapse plugin-content" id="pluginContent">
+    <div class="form-group">
+        <button class="btn btn-info pull-left" onclick="helperObject.process()" style="margin-bottom: 3px;">Get current mp3</button>
+        <input id="memriseMp3" class="form-control" style="width: 100%;">
+    </div>
+    <div class="form-group">
+        <label for="newMp3-1" class="pull-left">New mp3</label>
+        <input id="newMp3-1" class="form-control" style="width: 100%;">
+    </div>
+    <div class="form-group">
+        <label for="newMp3-2" class="pull-left">New mp3 (optional)</label>
+        <input id="newMp3-2" class="form-control" style="width: 100%;">
+    </div>
+    <div class="form-group">
+        <button class="btn btn-info pull-left" style="margin-bottom: 3px; background-color: #5bc0de" onclick="helperObject.add()">Add</button>
+        <button class="btn btn-success pull-left" style="margin-bottom: 3px;" onclick="helperObject.saveData()">Save</button>
+        <button class="btn btn-success pull-left" style="margin-bottom: 3px;" onclick="helperObject.loadData()">Load</button>
+        <button class="btn btn-success pull-left" style="margin-bottom: 3px;" onclick="helperObject.uploadData()" title="Uploads data from the textarea.">Upload</button>
+        <button class="btn btn-success pull-left" style="margin-bottom: 3px;" onclick="helperObject.showData()">Show</button>
+        <button class="btn btn-danger pull-left" style="margin-bottom: 3px;" onclick="helperObject.deleteData()">Delete</button>
+        <textarea id="data-details" style="width: 100%; display: none;"></textarea>
+    </div>
+</div>
