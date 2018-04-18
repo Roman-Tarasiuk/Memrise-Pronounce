@@ -14,6 +14,11 @@
     helperObject.addOrUpdateData = function(mp3Memrise, mp3New1, mp3New2) {
         helperObject.vocabulary = JSON.parse(window.localStorage.getItem('memriseVocabulary'));
 
+        if (helperObject.vocabulary == null) {
+            helperObject.vocabulary = [];
+            console.log('** Vocabulary recreated in addOrUpdateData().');
+        }
+
         var index = helperObject.indexOf(mp3Memrise);
 
         var vocEntry = {

@@ -12,6 +12,8 @@
 
     //
 
+    helperObject.replacePath = 'http://127.0.0.1:8080/Ogg/';
+
     helperObject.process = function() {
         console.log('** Processing...');
     }
@@ -68,20 +70,51 @@
             return;
         }
 
-        if (players && players.length) {
-            if (!players[0].replaced) {
-                document.getElementById('memriseMp3').value = helperObject.getFileName(players[0].href);
-                document.getElementById('btnAdd').removeAttribute('disabled');
-                console.log('** Replacing player content...');
-                players[0].replaced = true;
-            }
-            else {
-                console.log('** Player content replaced.');
-            }
+        if (players && players.length > 0) {
+            console.log('** Replacing player content...');
+            helperObject.replaceMp3(players[0]);
+            document.getElementById('memriseMp3').value = helperObject.getFileName(players[0].href);
         }
     }
 
     helperObject.getFileName = function(path) {
         return path.substr(path.lastIndexOf('/') + 1);
+    }
+
+    helperObject.replaceMp3 = function(player) {
+        var needReplace = true;
+
+        if (player.replaceIndex) {
+            var mp3 =  helperObject.getFileName(player.href);
+            if (helperObject.vocabulary[player.replaceIndex].mp31 == mp3
+            || helperObject.vocabulary[player.replaceIndex].mp32 == mp3) {
+                needReplace = false;
+                console.log('** Mp3 already replaced.');
+            }
+        }
+
+        if (needReplace) {
+            var memriseMp3 = helperObject.getFileName(player.href);
+            var index = helperObject.indexOf(memriseMp3);
+
+            if (index > -1) {
+                player.href = helperObject.replacePath + helperObject.vocabulary[index].mp31;
+                player.replaceIndex = index;
+
+                if (helperObject.vocabulary[index].mp32 !== ''
+                && helperObject.vocabulary[index].mp32 !== undefined
+                && helperObject.vocabulary[index].mp32 !== null) {
+                    var player2 = player.cloneNode(true);
+                    player2.href = helperObject.replacePath + helperObject.vocabulary[index].mp32;
+                    player2.replaceIndex = index;
+                    player.parentElement.appendChild(player2);
+                }
+
+                console.log('** Mp3 replaced.');
+            }
+            else {
+                console.log('** Matching mp3 not found.');
+            }
+        }
     }
 })();
