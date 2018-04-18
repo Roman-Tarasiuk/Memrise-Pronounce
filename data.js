@@ -9,10 +9,14 @@
 
     helperObject.loadData = function() {
         helperObject.vocabulary = JSON.parse(window.localStorage.getItem('memriseVocabulary'));
+
+        console.log('** Data loaded from the storage.');
     }
 
     helperObject.deleteData = function() {
         helperObject.vocabulary = window.localStorage.removeItem('memriseVocabulary');
+
+        console.log('** Data deleted.');
     }
 
     helperObject.saveData = function() {
@@ -21,7 +25,7 @@
             console.log('** Data saved.');
         }
         else {
-            console.log('** No data');
+            console.log('** No data to save.');
         }
     }
 
@@ -29,6 +33,8 @@
         var textarea = document.getElementById('data-details');
 
         helperObject.vocabulary = JSON.parse(textarea.value);
+
+        console.log('** Data uploaded to the vocabulary object.');
     }
 
     helperObject.showData = function() {

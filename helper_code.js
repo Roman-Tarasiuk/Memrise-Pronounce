@@ -60,7 +60,7 @@
     }
 
     helperObject.add = function() {
-        if (helperObject.vocabulary === undefined) {
+        if (helperObject.vocabulary === undefined || helperObject.vocabulary === null) {
             helperObject.vocabulary = {};
         }
 
@@ -78,5 +78,41 @@
         newMp3_2El.value = '';
 
         console.log('** Entry added/updated.');
+    }
+
+    helperObject.startTracking = function() {
+        if (helperObject.isTracking) {
+            return;
+        }
+
+        helperObject.isTracking = true;
+
+        helperObject.trackingInterval = setInterval(function(){
+            helperObject.checkPageForChanges();
+        }, 1000);
+    }
+
+    helperObject.stopTracking = function() {
+        if (!helperObject.isTracking) {
+            return;
+        }
+
+        clearInterval(helperObject.trackingInterval);
+
+        helperObject.isTracking = false;
+    }
+
+    helperObject.checkPageForChanges = function() {
+        var players = document.getElementsByClassName('audio-player');
+        console.log('** Players count: ' + players.length);
+
+        if (!players[0].replaced) {
+            document.getElementById('memriseMp3').value = helperObject.getFileName(players[0].href);
+            document.getElementById('btnAdd').removeAttribute('disabled');
+        }
+    }
+
+    helperObject.getFileName = function(path) {
+        return path.substr(path.lastIndexOf('/') + 1);
     }
 })();

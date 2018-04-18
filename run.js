@@ -57,5 +57,9 @@ function log(info) {
         helperObject.loadData();
 
         console.log('** Data loaded.');
+
+        helperObject.startTracking();
+
+        console.log('** Tracking started.');
     }
 })();
