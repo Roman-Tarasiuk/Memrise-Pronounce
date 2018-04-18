@@ -22,56 +22,12 @@
         document.head.appendChild(cssElement);
     }
 
-    helperObject.getCreationTime = function (str) {
-        log('** getCreationTime()');
-        var re = /<TEXTAREA class=\"textarea.*?100(?:.|\r\n)*?<\/TEXTAREA>.*\r\n.*\r\n.*\r\n.*\r\n.*\r\n.*/g;
-        var reCreation = /<br>(.*)<br>\r\n.*?<br>(.*)/g;
-        var result = null;
-
-        var resultTmp = re.exec(str);
-        log(resultTmp);
-        if (resultTmp != null) {
-          var tmp1 = reCreation.exec(resultTmp[0]);
-          log(tmp1);
-          result = 'Last edition:\t' + tmp1[1] + '\t' + tmp1[2] + '\n';
-          log(result);
-        }
-
-        log('while');
-        var tmp2;
-        while ((tmp2 = re.exec(str)) != null) {
-          resultTmp = tmp2;
-        }
-        log('while passed.');
-
-        log(resultTmp);
-        if (resultTmp != null) {
-          reCreation.lastIndex = 0;
-          resultTmp = reCreation.exec(resultTmp[0]);
-          log(resultTmp);
-          result += '    Creation:\t' + resultTmp[1] + '\t' + resultTmp[2] + '\n';
-        }
-
-        log('** getCreationTime() finished');
-
-        // result += str;
-
-        return result;
-    }
-
     helperObject.add = function() {
-        if (helperObject.vocabulary === undefined || helperObject.vocabulary === null) {
-            helperObject.vocabulary = {};
-        }
-
         var idEl = document.getElementById('memriseMp3');
         var newMp3_1El = document.getElementById('newMp3-1');
         var newMp3_2El = document.getElementById('newMp3-2');
 
-        helperObject.vocabulary[idEl.value.toString()] = {
-            mp31: newMp3_1El.value,
-            mp32: newMp3_2El.value
-        }
+        helperObject.addOrUpdateData(idEl.value, newMp3_1El.value, newMp3_2El.value);
 
         idEl.value = '';
         newMp3_1El.value = '';
@@ -106,9 +62,22 @@
         var players = document.getElementsByClassName('audio-player');
         console.log('** Players count: ' + players.length);
 
-        if (!players[0].replaced) {
-            document.getElementById('memriseMp3').value = helperObject.getFileName(players[0].href);
-            document.getElementById('btnAdd').removeAttribute('disabled');
+        var hidden = document.getElementsByClassName('hidden-audio');
+        if (hidden.length > 0) {
+            console.log('** Player is hidden now.');
+            return;
+        }
+
+        if (players && players.length) {
+            if (!players[0].replaced) {
+                document.getElementById('memriseMp3').value = helperObject.getFileName(players[0].href);
+                document.getElementById('btnAdd').removeAttribute('disabled');
+                console.log('** Replacing player content...');
+                players[0].replaced = true;
+            }
+            else {
+                console.log('** Player content replaced.');
+            }
         }
     }
 
