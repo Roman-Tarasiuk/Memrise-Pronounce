@@ -60,19 +60,38 @@
         helperObject.isTracking = false;
     }
 
+    var replaceResult = {
+        replaced: 0,
+        replacedEarlier: 1,
+        replacementNotInVocabulary: 2
+    };
+
+    var replace = {
+        once: 1,
+        both: 2
+    };
+
+    Object.freeze(replaceResult);
+    Object.freeze(replace);
+
     helperObject.checkPageForChanges = function() {
         var players = document.getElementsByClassName('audio-player');
         console.log('** Players count: ' + players.length);
 
-        var hidden = document.getElementsByClassName('hidden-audio');
-        if (hidden.length > 0) {
-            console.log('** Player is hidden now.');
-            return;
-        }
+        var result;
 
-        if (players && players.length > 0) {
+        var hidden = document.getElementsByClassName('hidden-audio');
+        if (hidden && hidden.length > 0) {
+            console.log('** Player is hidden now.');
+            result = helperObject.replaceMp3(players[0], replace.once);
+        }
+        else if (players && players.length > 0) {
             console.log('** Replacing player content...');
-            helperObject.replaceMp3(players[0]);
+            result = helperObject.replaceMp3(players[0], replace.both);
+        }
+        
+        if (result != replaceResult.replaced
+        && result != replaceResult.replacedEarlier) {
             document.getElementById('memriseMp3').value = helperObject.getFileName(players[0].href);
         }
     }
@@ -81,16 +100,23 @@
         return path.substr(path.lastIndexOf('/') + 1);
     }
 
-    helperObject.replaceMp3 = function(player) {
+    helperObject.replaceMp3 = function(player, replacePlace) {
         var needReplace = true;
 
-        if (player.replaceIndex) {
+        // console.log(player);
+
+        var replaceIndex = player.getAttribute('replaceIndex');
+        if (replaceIndex) {
             var mp3 =  helperObject.getFileName(player.href);
-            if (helperObject.vocabulary[player.replaceIndex].mp31 == mp3
-            || helperObject.vocabulary[player.replaceIndex].mp32 == mp3) {
+            if (helperObject.vocabulary[replaceIndex].mp31 == mp3
+            || helperObject.vocabulary[replaceIndex].mp32 == mp3) {
                 needReplace = false;
                 console.log('** Mp3 already replaced.');
+                return replaceResult.replacedEarlier;
             }
+        }
+        else {
+            console.log('** player.replaceIndex is undefined.');
         }
 
         if (needReplace) {
@@ -99,22 +125,28 @@
 
             if (index > -1) {
                 player.href = helperObject.replacePath + helperObject.vocabulary[index].mp31;
-                player.replaceIndex = index;
+                player.setAttribute('replaceIndex', index.toString());
 
-                if (helperObject.vocabulary[index].mp32 !== ''
+                if (replacePlace == replace.both
+                && helperObject.vocabulary[index].mp32 !== ''
                 && helperObject.vocabulary[index].mp32 !== undefined
                 && helperObject.vocabulary[index].mp32 !== null) {
                     var player2 = player.cloneNode(true);
                     player2.href = helperObject.replacePath + helperObject.vocabulary[index].mp32;
-                    player2.replaceIndex = index;
                     player.parentElement.appendChild(player2);
                 }
 
                 console.log('** Mp3 replaced.');
+
+                return replaceResult.replaced;
             }
             else {
                 console.log('** Matching mp3 not found.');
+
+                return replaceResult.replacementNotInVocabulary;
             }
         }
+
+        console.log('** replaceMp3() BUG!');
     }
 })();
