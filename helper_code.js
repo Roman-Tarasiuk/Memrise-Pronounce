@@ -76,6 +76,11 @@
 
     helperObject.checkPageForChanges = function() {
         var players = document.getElementsByClassName('audio-player');
+        if (players == null || !players.length || players.length == 0) {
+            console.log('** There is no player.');
+            return;
+        }
+
         console.log('** Players count: ' + players.length);
 
         var result;
@@ -89,7 +94,7 @@
             console.log('** Replacing player content...');
             result = helperObject.replaceMp3(players[0], replace.both);
         }
-        
+
         if (result != replaceResult.replaced
         && result != replaceResult.replacedEarlier) {
             document.getElementById('memriseMp3').value = helperObject.getFileName(players[0].href);
